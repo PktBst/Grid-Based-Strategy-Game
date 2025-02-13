@@ -16,7 +16,8 @@ public class EnemyAIScript : MonoBehaviour, IAI
 
     public void FollowPlayer()
     {
-        CalculateAndMovePlayerToSelectedTile();
+        if (!isMoving)
+            CalculateAndMovePlayerToSelectedTile();
     }
 
     void Start()
@@ -26,6 +27,7 @@ public class EnemyAIScript : MonoBehaviour, IAI
 
     void Update()
     {
+        if (Player == null) return;
         PlayerCurrentPos = Player.transform.position;
 
         if (PlayerCurrentPos != LastPlayerPos && !isMoving)
@@ -37,7 +39,6 @@ public class EnemyAIScript : MonoBehaviour, IAI
 
     void CalculateAndMovePlayerToSelectedTile()
     {
-        isMoving = true;
         List<Vector3> path = FindPath(transform.position, PlayerCurrentPos);
 
         if (path.Count > 0)
@@ -45,14 +46,11 @@ public class EnemyAIScript : MonoBehaviour, IAI
             pathQueue = new Queue<Vector3>(path);
             StartCoroutine(MoveAlongPath());
         }
-        else
-        {
-            isMoving = false;
-        }
     }
 
     IEnumerator MoveAlongPath()
     {
+        isMoving = true;
         while (pathQueue.Count > 0)
         {
             Vector3 nextPos = pathQueue.Dequeue();
@@ -66,29 +64,17 @@ public class EnemyAIScript : MonoBehaviour, IAI
 
             transform.position = targetPos;
         }
-
         isMoving = false;
     }
 
-    //updated A* for enemy
     List<Vector3> FindPath(Vector3 start, Vector3 playerPos)
     {
-        Vector2Int startNode = new Vector2Int((int)start.x, (int)start.z);
-        Vector2Int playerNode = new Vector2Int((int)playerPos.x, (int)playerPos.z);
+        Vector2Int startNode = new Vector2Int(Mathf.RoundToInt(start.x), Mathf.RoundToInt(start.z));
+        Vector2Int playerNode = new Vector2Int(Mathf.RoundToInt(playerPos.x), Mathf.RoundToInt(playerPos.z));
 
-        // Get valid adjacent tiles around the player
-        List<Vector2Int> adjacentTiles = GetNeighbors(playerNode).FindAll(IsWalkable);
+        if (startNode == playerNode) return new List<Vector3>();
 
-        // If no adjacent tile is walkable, return an empty path
-        if (adjacentTiles.Count == 0) return new List<Vector3>();
-
-        // If already in an adjacent tile, don’t move
-        if (adjacentTiles.Contains(startNode)) return new List<Vector3>();
-
-        // Find the closest adjacent tile to the enemy
-        Vector2Int targetNode = adjacentTiles.OrderBy(t => Heuristic(startNode, t)).First();
-
-        return AStarPathfinding(startNode, targetNode);
+        return AStarPathfinding(startNode, playerNode);
     }
 
     List<Vector3> AStarPathfinding(Vector2Int startNode, Vector2Int targetNode)
@@ -118,7 +104,7 @@ public class EnemyAIScript : MonoBehaviour, IAI
 
                 if (!openList.Contains(neighbor))
                     openList.Add(neighbor);
-                else if (tentativeGScore >= gScore[neighbor])
+                else if (tentativeGScore >= gScore.GetValueOrDefault(neighbor, int.MaxValue))
                     continue;
 
                 cameFrom[neighbor] = current;
@@ -126,7 +112,6 @@ public class EnemyAIScript : MonoBehaviour, IAI
                 fScore[neighbor] = gScore[neighbor] + Heuristic(neighbor, targetNode);
             }
         }
-
         return new List<Vector3>();
     }
 
@@ -139,12 +124,8 @@ public class EnemyAIScript : MonoBehaviour, IAI
             path.Add(new Vector3(current.x, 0, current.y));
             current = cameFrom[current];
         }
-
+        path.RemoveAt(0);
         path.Reverse();
-
-        // Remove last tile in path so the enemy stops at an adjacent tile
-        if (path.Count > 0) path.RemoveAt(path.Count - 1);
-
         return path;
     }
 
@@ -168,7 +149,6 @@ public class EnemyAIScript : MonoBehaviour, IAI
     {
         if (pos.x < 0 || pos.x >= 10 || pos.y < 0 || pos.y >= 10)
             return false;
-
         return !gridData.GetValue(pos.x, pos.y);
     }
 }
