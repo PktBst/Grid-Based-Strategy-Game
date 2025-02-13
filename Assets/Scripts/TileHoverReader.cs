@@ -21,7 +21,7 @@ namespace GridMaker
                 {
                     CoordinatesLabel.text = "Coordinates : (" + cubeScript.Pos.x.ToString() +","+ cubeScript.Pos.z.ToString()+")";
                     WalkableLabel.text = "Walkable : " + cubeScript.Walkable.ToString();
-                    Debug.Log("Hit object contains CubeScript.");
+                    //Debug.Log("Hit object contains CubeScript.");
                 }
             }
         }
