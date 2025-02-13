@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface AI 
+public interface IAI
 {
     void FollowPlayer();
 }

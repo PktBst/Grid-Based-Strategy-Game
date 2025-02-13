@@ -4,6 +4,6 @@ public class MainMenuManager : MonoBehaviour
 {
     public void LoadScene()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("PlayScene");
     }
 }

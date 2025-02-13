@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ObstacleManager : MonoBehaviour
 {
@@ -27,5 +28,10 @@ public class ObstacleManager : MonoBehaviour
                 
             }
         }
+    }
+
+    public void LoadObstacleAssignerScene()
+    {
+        SceneManager.LoadScene("MainScene");
     }
 }
