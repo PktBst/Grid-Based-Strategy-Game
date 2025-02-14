@@ -15,5 +15,14 @@ First, clone the repository to your local machine:
 ```bash
 git clone https://github.com/PktBst/Grid-Based-Strategy-Game
 ```
-2. Open the Project in Unity
+### 2. Open the Project in Unity
 Open Unity Hub and click on "Add" to add an existing project. Navigate to the cloned repository folder and select it. Open the project in Unity.
+
+### 3. Open the PlayScene
+Navigate to Assets > Scenes > PlayScene 
+
+### 4. Configure Obstacles
+Navigate to the Top Menu Bar, then select MyTools > Obstacle Setup to access the obstacle configuration panel.
+
+
+
