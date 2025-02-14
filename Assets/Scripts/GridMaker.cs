@@ -13,6 +13,7 @@ namespace GridMaker
             GenerateGrid();
         }
 
+        //makes grid of length & width of gridSize
         void GenerateGrid()
         {
             for (int x = 0; x < gridSize; x++)

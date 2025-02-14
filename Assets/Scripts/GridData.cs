@@ -6,14 +6,18 @@ public class GridData : ScriptableObject
     public const int GridWidth = 10;
     public const int GridHeight = 10;
 
+    // 100 long bool array, caused 2d array arent serializable
     [SerializeField] private bool[] grid = new bool[GridWidth * GridHeight]; 
 
+    //getter
     public bool GetValue(int x, int y)
     {
         if (IsValidPosition(x, y))
             return grid[y * GridWidth + x];
         return false;
     }
+
+    //toggle setter
     public bool ToggleValue(int x, int y)
     {
         if (IsValidPosition(x, y))
@@ -21,20 +25,9 @@ public class GridData : ScriptableObject
         return grid[y * GridWidth + x];
     }
 
+    //checking if accessing the grid is availble or not
     private bool IsValidPosition(int x, int y)
     {
         return x >= 0 && x < GridWidth && y >= 0 && y < GridHeight;
     }
-    //public void PrintGrid()
-    //{
-    //    for (int y = 0; y < GridHeight; y++)
-    //    {
-    //        string row = "";
-    //        for (int x = 0; x < GridWidth; x++)
-    //        {
-    //            row += GetValue(x, y) ? "1 " : "0 "; 
-    //        }
-    //        Debug.Log(row); 
-    //    }
-    //}
 }

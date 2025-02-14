@@ -20,11 +20,6 @@ public class ObstacleButtonUIGenerator : MonoBehaviour
 
     void GenerateGrid(int size)
     {
-        //clear before generating new buttons
-        //foreach (Transform child in gridPanel)
-        //{
-        //    Destroy(child.gameObject);
-        //}
 
         // get button width and height
         float buttonWidth = buttonPrefab.GetComponent<RectTransform>().sizeDelta.x;

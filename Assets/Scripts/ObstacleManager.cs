@@ -11,6 +11,8 @@ public class ObstacleManager : MonoBehaviour
     {
         GenerateObstacleGrid();
     }
+
+    // generate Obstacle based on GridData on top of cube tiles
     void GenerateObstacleGrid()
     {
         for (int x = 0; x < gridSize; x++)
